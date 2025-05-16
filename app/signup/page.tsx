@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { SignupForm } from "./components/signupForm";
 import Link from "next/link";
-import { useEffect } from "react";
 
 export default function Signup() {
     const router = useRouter();
