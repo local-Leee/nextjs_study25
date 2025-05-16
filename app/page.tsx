@@ -9,11 +9,12 @@ export default function Home() {
   const [nickname, setNickname] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedNickname = localStorage.getItem("nickname");
-    setNickname(storedNickname);
-    
-    if (!storedNickname) {
+    const isLogin = localStorage.getItem("isLogin");
+    const nickname = localStorage.getItem("nickname");
+    if (isLogin !== "true") {
       router.push("/login");
+    } else {
+      setNickname(nickname);
     }
   }, [router]);
 
@@ -21,6 +22,7 @@ export default function Home() {
   const handleLogout = () => {
     localStorage.removeItem("nickname");
     localStorage.removeItem("isLogin");
+    console.log(localStorage.getItem("isLogin"));
     localStorage.removeItem("isAdmin");
     router.push("/login");
   };
@@ -47,10 +49,8 @@ export default function Home() {
           </li>
         </ul>
       </header>
-      <main className="flex flex-col items-center justify-center h-screen">
-        <p className="text-9xl font-bold">
-            🌟🌟환영🌟🌟
-        </p>
+      <main className="flex flex-col items-center justify-center h-screen text-center">
+        <p className="text-9xl font-bold">환영</p>
         <p className="text-3xl font-bold">아무것도 없지만</p>
       </main>
     </div>

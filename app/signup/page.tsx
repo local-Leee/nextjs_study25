@@ -17,14 +17,6 @@ export default function Signup() {
         router.push("/login");
     };
 
-    useEffect(() => {
-        // localStorage 접근은 useEffect 내부에서만 가능
-        const data = localStorage.getItem("userData");
-        if (data) {
-            router.push("/login");
-        }
-    }, [router]);
-
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
