@@ -1,12 +1,12 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/src/components/common/card/card";
+import { Badge } from "@/src/components/common/badge";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Calendar, User } from "lucide-react";
 import Image from "next/image";
-import { NotionPost } from "@/types/notion";
+import { NotionPost } from "@/src/types/notion";
 
 interface PostCardProps {
     post: NotionPost;

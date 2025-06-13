@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { LoginForm } from "./components/loginForm";
 import { useRouter } from "next/navigation";
-import type { User } from "@/types/user";
+import type { User } from "@/src/types/user";
 // 기본 관리자 계정
 const adminData = {
     id: "locallee",

@@ -1,7 +1,7 @@
-import Header from "@/components/layouts/Header";
+import Header from "@/src/components/layouts/Header";
 import Link from "next/link";
-import { PostCard } from "@/components/feature/post/PostCard";
-import { getPublishedPosts } from "@/lib/notion";
+import { PostCard } from "@/src/components/feature/post/PostCard";
+import { getPublishedPosts } from "@/src/lib/notion";
 
 export default async function Home() {
     const posts = await getPublishedPosts();

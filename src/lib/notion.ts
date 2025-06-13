@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client"; // 노션에서 제공하는 클라이언트 라이브러리
-import type { Post } from "@/types/post";
+import type { Post } from "@/src/types/post";
 import type {
     PageObjectResponse,
     PersonUserObjectResponse,
