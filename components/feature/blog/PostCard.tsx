@@ -14,9 +14,9 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
     return (
-        <Card className="group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg mt-5">
+        <Card className="flex flex-col group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg h-full">
             {post.coverImage && (
-                <div className="relative aspect-[2/1] overflow-hidden">
+                <div className="relative aspect-[1/1] md:aspect-[1.5/1] lg:aspect-[1/1.5] overflow-hidden">
                     <div className="from-background/20 absolute inset-0 z-10 bg-gradient-to-t to-transparent" />
                     <Image
                         src={post.coverImage}
@@ -28,7 +28,7 @@ export function PostCard({ post }: PostCardProps) {
                     />
                 </div>
             )}
-            <CardContent className="p-6">
+            <CardContent className="p-6 flex flex-col flex-1">
                 <div className="mb-4 flex flex-wrap gap-2">
                     {post.tags?.map((tag) => (
                         <Badge
@@ -40,15 +40,15 @@ export function PostCard({ post }: PostCardProps) {
                         </Badge>
                     ))}
                 </div>
-                <h2 className="group-hover:text-primary mb-2 text-xl font-bold tracking-tight transition-colors text-left">
+                <h2 className="group-hover:text-primary mb-2 text-lg font-bold tracking-tight transition-colors text-left line-clamp-2 leading-relaxed">
                     {post.title}
                 </h2>
                 {post.description && (
-                    <p className="text-muted-foreground mt-2 line-clamp-2 leading-relaxed text-left">
+                    <p className="text-muted-foreground line-clamp-2 leading-relaxed text-left">
                         {post.description}
                     </p>
                 )}
-                <div className="text-muted-foreground mt-6 flex items-center gap-x-4 text-sm">
+                <div className="pt-4 text-xs text-gray-500 flex flex-col items-end mt-auto gap-x-4">
                     {post.author && (
                         <div className="flex items-center gap-1.5">
                             <User className="h-4 w-4" />
@@ -56,7 +56,7 @@ export function PostCard({ post }: PostCardProps) {
                         </div>
                     )}
                     {post.date && (
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 pt-1">
                             <Calendar className="h-4 w-4" />
                             <time>
                                 {format(new Date(post.date), "PPP", {

@@ -8,4 +8,6 @@ export interface Post {
     tags?: string[];
     modifiedDate?: string;
     slug: string;
+    content?: string;
+    createdTime?: string;
 }
