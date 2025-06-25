@@ -4,13 +4,14 @@ import type {
     PageObjectResponse,
     PersonUserObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import { unstable_cache } from "next/cache";
 
 export const notion = new Client({
     auth: process.env.NOTION_TOKEN,
 });
 
 // 게시글 목록 조회
-export const getPublishedPosts = async (): Promise<Post[]> => {
+export const getPublishedPosts = unstable_cache(async (): Promise<Post[]> => {
     const response = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID!,
         filter: {
@@ -27,7 +28,7 @@ export const getPublishedPosts = async (): Promise<Post[]> => {
         ],
     });
 
-    // console.log(response.results);
+    console.log(response.results);
 
     return response.results
         .filter((page): page is PageObjectResponse => "properties" in page)
@@ -65,9 +66,9 @@ export const getPublishedPosts = async (): Promise<Post[]> => {
                 author:
                     properties.Author.type === "people"
                         ? (
-                              properties.Author
-                                  .people[0] as PersonUserObjectResponse
-                          )?.name ?? ""
+                            properties.Author
+                                .people[0] as PersonUserObjectResponse
+                        )?.name ?? ""
                         : "",
                 date:
                     properties.Date.type === "date"
@@ -80,7 +81,12 @@ export const getPublishedPosts = async (): Promise<Post[]> => {
                         : page.id,
             };
         });
-};
+    },
+    undefined,
+    {
+        tags: ["posts"],
+    }
+);
 
 // 게시글 등록 - 타입 정의
 export interface CreatePostParams {

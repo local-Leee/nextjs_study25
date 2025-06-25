@@ -12,14 +12,21 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
+
 export function PostForm() {
-    // 리액트 쿼리 클라이언트 인스턴스 생성
+    // 리액트 쿼리 클라이언트 인스턴스 생성.
+    // QueryClient 인스턴스는 캐시 관리, 데이터 조회, 데이터 업데이트 등을 담당한다.
     const queryClient = useQueryClient();
 
-    // useRouter 인스턴스 생성
+    // useRouter 인스턴스 생성.
+    // useRouter는 현재 페이지의 URL 정보를 관리하고 페이지 이동을 처리하는 훅
     const router = useRouter();
 
-    // useActionState을 통해서 서버 액션 호출
+    // useActionState을 통해서 서버 액션 호출.
+    // ㄴ react 버전 19에 새롭게 등장한 훅.
+    // ㄴ 이러한 훅을 이용해서 폼 액션의 결과를 기반으로 State를 업데이트할 수 있도록 제공하는 Hook.
+    // ㄴ formAction의 결과를 기반으로 state를 업데이트할 수 있다.
     const [state, formAction, isPending] = useActionState(createPostAction, {
         message: "",
         errors: {},
@@ -42,85 +49,75 @@ export function PostForm() {
 
     return (
         <form action={formAction}>
-            <Card className="mx-auto max-w-2xl">
-                {/*  
-                    * 위에 정의한 서버액션을 <form> 태그 Action 속성 props로 전달 
-                    그러면 폼 하위 요소들의 데이터가 위에 정의한 서버액션의 formData 파라미터로 넘어와서 데이터를 등록할 수 있다.
-                */}
-                <CardContent className="p-6">
-                    {/* 상태 메시지 표시 */}
-                    {state?.message && (
-                        <Alert
-                            className={`mb-6 ${
-                                state.errors ? "bg-red-50" : "bg-green-50"
-                            }`}
-                        >
-                            <AlertDescription>{state.message}</AlertDescription>
-                        </Alert>
-                    )}
+        <Card className="mx-auto max-w-2xl">
+            {/*  
+            * 위에 정의한 서버액션을 <form> 태그 Action 속성 props로 전달 
+            그러면 폼 하위 요소들의 데이터가 위에 정의한 서버액션의 formData 파라미터로 넘어와서 데이터를 등록할 수 있다.
+          */}
+            <CardContent className="p-6">
+            {/* 상태 메시지 표시 */}
+            {state?.message && (
+                <Alert className={`mb-6 ${state.errors ? 'bg-red-50' : 'bg-green-50'}`}>
+                <AlertDescription>{state.message}</AlertDescription>
+                </Alert>
+            )}
+    
+              {/* 제목 입력 */}
+                <div className="mb-6 space-y-2">
+                <Label htmlFor="title">제목</Label>
+                <Input 
+                    id="title" 
+                    name="title" 
+                    placeholder="제목을 입력해주세요" 
+                    className="h-12 text-lg" 
+                  defaultValue={state?.formData?.title} // 실패 시 제목 입력 값 유지
+                />              
+                {state?.errors?.title && (
+                    <p className="text-sm text-red-500">{state.errors.title[0]}</p>
+                )}
+            </div>
+  
+              {/* 태그 입력 */}
+            <div className="mb-6 space-y-2">
+                <Label htmlFor="tag">태그</Label>
+                <Input 
+                    id="tag" 
+                    name="tag" 
+                    placeholder="태그를 입력해주세요" 
+                    className="h-12" 
+                  defaultValue={state?.formData?.tag} // 실패 시 태그 입력 값 유지
+                />
+                {state?.errors?.tag && (
+                    <p className="text-sm text-red-500">{state.errors.tag[0]}</p>
+                )}
+            </div>
 
-                    {/* 제목 입력 */}
-                    <div className="mb-6 space-y-2">
-                        <Label htmlFor="title">제목</Label>
-                        <Input
-                            id="title"
-                            name="title"
-                            placeholder="제목을 입력해주세요"
-                            className="h-12 text-lg"
-                            defaultValue={state?.formData?.title} // 실패 시 제목 입력 값 유지
-                        />
-                        {state?.errors?.title && (
-                            <p className="text-sm text-red-500">
-                                {state.errors.title[0]}
-                            </p>
-                        )}
-                    </div>
+              {/* 본문 입력 */}
+            <div className="space-y-2">
+                <Label htmlFor="content">본문</Label>
+                <Textarea
+                    id="content"
+                    name="content"
+                    placeholder="작성해주세요"
+                    className="min-h-[400px] resize-none"
+                    defaultValue={state?.formData?.content} // 실패 시 본문 입력 값 유지
+                />
+                {state?.errors?.content && (
+                    <p className="text-sm text-red-500">{state.errors.content[0]}</p>
+                )}
+            </div>
 
-                    {/* 태그 입력 */}
-                    <div className="mb-6 space-y-2">
-                        <Label htmlFor="tag">태그</Label>
-                        <Input
-                            id="tag"
-                            name="tag"
-                            placeholder="태그를 입력해주세요"
-                            className="h-12"
-                            defaultValue={state?.formData?.tag} // 실패 시 태그 입력 값 유지
-                        />
-                        {state?.errors?.tag && (
-                            <p className="text-sm text-red-500">
-                                {state.errors.tag[0]}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* 본문 입력 */}
-                    <div className="space-y-2">
-                        <Label htmlFor="content">본문</Label>
-                        <Textarea
-                            id="content"
-                            name="content"
-                            placeholder="작성해주세요"
-                            className="min-h-[400px] resize-none"
-                            defaultValue={state?.formData?.content} // 실패 시 본문 입력 값 유지
-                        />
-                        {state?.errors?.content && (
-                            <p className="text-sm text-red-500">
-                                {state.errors.content[0]}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* 버튼 영역 */}
-                    <div className="mt-6 flex justify-end gap-2">
-                        <Button disabled={isPending}>
-                            {isPending && (
-                                <Loader2 className="mr-2 hidden h-4 w-4 animate-spin" />
-                            )}
-                            발행하기
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
+              {/* 버튼 영역 */}
+            <div className="mt-6 flex justify-end gap-2">
+                <Button disabled={isPending}>
+                {isPending && (
+                    <Loader2 className="mr-2 hidden h-4 w-4 animate-spin" />
+                )}
+                    발행하기
+                </Button>
+            </div> 
+            </CardContent>
+        </Card>
         </form>
     );
 }

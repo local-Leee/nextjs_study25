@@ -5,7 +5,8 @@ import { createPost } from "@/lib/notion";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 // zod 사용하기 위해 스키마 정의한다.
-// FormData라는 객체를 받았기 때문에 PostData의 스키마 검사를 위해서 post 스키마를 적용하고 Post 안에는 Title, tag, content 적용
+// FormData라는 객체를 받았기 때문에 PostData의 스키마 검사를 위해서 post 스키마를 적용하고 
+// Post 안에는 Title, tag, content 적용
 // 각 필드마다 예상되는 타입과 제약 조건을 설정할 수 있다.
 const postSchema = z.object({
     title: z.string().min(1, { message: "제목을 입력해주세요." }),
